@@ -1,17 +1,19 @@
-<h2>HASŁO</h2>
+<div class="cover-container">
+  <%= image_tag("haba_logo.jpg", class: "cover") %>
 
-<%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
-  <div class="field">
-    <%= f.email_field :email, value: ENV['HABA_EMAIL'], hidden: true %>
+  <div class="cover">
+    <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
+      <div class="field">
+        <%= f.email_field :email, value: Rails.application.credentials.user[:email], hidden: true %>
+      </div>
+
+      <div class="field cover">
+        <%= f.password_field :password, placeholder: "podaj hasło", class: "cover" %>
+      </div>
+
+      <div class="actions">
+        <%= f.submit("Wejdź", hidden: true) %>
+      </div>
+    <% end %>
   </div>
-
-  <div class="field">
-    <%= f.label :password %><br />
-    <%= f.password_field :password, autocomplete: "current-password" %>
-  </div>
-
-  <div class="actions">
-    <%= f.submit "Log in" %>
-  </div>
-<% end %>
-
+</div>

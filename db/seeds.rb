@@ -6,4 +6,4 @@
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
 
-default_user = User.create!(email: ENV['HABA_EMAIL'], password: ENV['HABA_PASS'])
+default_user = User.create!(email: Rails.application.credentials.user[:email], Rails.application.credentials.user[:pass])

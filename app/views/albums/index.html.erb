@@ -1,0 +1,14 @@
+<p>
+  <table>
+    <% @albums.each do |album| %>
+      <div class="album">
+        <div class="album-cover-photo">
+          <img src=<%= album.cover_photo_url %>>
+        </div>
+        <div>
+          <h5><%= album.title %></h5>
+        </div>
+      </div>
+    <% end %>
+  </table>
+</p>
