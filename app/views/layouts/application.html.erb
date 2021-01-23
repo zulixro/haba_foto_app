@@ -1,18 +1,21 @@
 <!DOCTYPE html>
-<html>
+<html lang="pl">
   <head>
-    <title>Habafoto</title>
-    <%= csrf_meta_tags %>
-    <%= csp_meta_tag %>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <%= stylesheet_link_tag 'application', "https://fonts.googleapis.com/css2?family=Lato", media: 'all', 'data-turbolinks-track': 'reload' %>
-    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+    <title><%= content_for?(:title) ? yield(:title) : "Habafoto" %></title>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <%= javascript_include_tag "application", 'data-turbolinks-track' => true %>
+    <%= stylesheet_link_tag    "application" %>
+    <%= csrf_meta_tags %>
   </head>
 
   <body>
     <p class="navbar-text float-right">
       <% if user_signed_in? %>
-        <%= link_to "Logout", destroy_user_session_path, method: :delete, :class => 'navbar-link'  %>
+        <%= link_to "Wyloguj się, papa!", destroy_user_session_path, method: :delete, :class => 'navbar-link'  %>
       <% end %>
     </p>
     <%= yield %>

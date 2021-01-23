@@ -1,14 +1,12 @@
-<p>
-  <table>
-    <% @albums.each do |album| %>
-      <div class="album">
-        <div class="album-cover-photo">
-          <img src=<%= album.cover_photo_url %>>
-        </div>
-        <div>
-          <h5><%= album.title %></h5>
-        </div>
+<h1>Albumy</h1>
+  
+<div class="row">
+  <% @albums.each do |album| %>
+    <div class="small-1 large-4 columns">
+      <div class="album-cover-photo">
+        <%= link_to image_tag(album.cover_photo_url), album_path(album.id) %>
       </div>
-    <% end %>
-  </table>
-</p>
+      <h5><%= album.title %></h5>
+    </div>
+  <% end %>
+</div>

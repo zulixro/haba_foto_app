@@ -1,0 +1,47 @@
+<h2 class="back-link"><%=link_to "<-", albums_path %></h2>
+<h1><%= @album.title %></h1>
+
+<table>
+	<tr>
+	  <td>rok:</td>
+	  <td><%= @album.year %></td>
+	<tr>
+	  <td>gdzie:</td>
+    <td><%= @album.river %></td>
+  </tr>
+  <tr>
+    <td>tagi:</td>
+    <td><%= @album.tags.join(', ') %></td>
+  </tr>
+  <tr>
+    <td>data:</td>
+    <td><%= @album.date %></td>
+  </tr>
+  <tr>
+    <td>autorzy:</td>
+    <td><%= @photos.map(&:by).compact.join(', ') %></td>
+  </tr>
+</table>
+
+<div class="row">
+  <% @photos.each do |photo| %>
+    <div class="small-1 large-4 columns">
+      <div class="album-cover-photo">
+        <%= image_tag(photo.url) %>
+      </div>
+      <table>
+      	<tr>
+      	  <td>autor/ka:</td>
+      	  <td><%= photo.by %></td>
+      	<tr>
+      	  <td>gdzie:</td>
+          <td><%= photo.river %></td>
+        </tr>
+        <tr>
+          <td>data:</td>
+          <td><%= photo.date %></td>
+        </tr>
+      </table>
+    </div>
+  <% end %>
+</div>

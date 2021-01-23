@@ -12,9 +12,11 @@
  *
  *= require_tree .
  *= require_self
+ *= require foundation_and_overrides
+
  */
-body {
-    font-family: 'Lato', sans-serif;
+h1 {
+    padding: 3%
 }
 
 .float-right {
