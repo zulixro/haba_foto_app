@@ -7,7 +7,7 @@ module TokenHelper
   private
 
   def crypt
-    @crypt ||= ActiveSupport::MessageEncryptor.new(Rails.application.credentials.crypt[:key])
+    @crypt ||= ActiveSupport::MessageEncryptor.new(Rails.application.secrets.secret_key_base[0..31])
   end
 
   def refresh_access_token

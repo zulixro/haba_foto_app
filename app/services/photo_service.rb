@@ -8,7 +8,7 @@ class PhotoService
     begin
       response = RestClient.get photo_url + "/v1/albums", {:Authorization => "Bearer #{access_token}"}
       JSON.parse(response.body)["albums"]
-    rescue RestClient::Unauthorized
+    rescue RestClient::Unauthorized, ActiveSupport::MessageEncryptor::InvalidMessage
       refresh_access_token
       retry
     end
