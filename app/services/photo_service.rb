@@ -5,16 +5,29 @@ class PhotoService
   include TokenHelper
 
   def albums
-    call(:get, '/v1/albums')['albums'].map { |data| Album.new(data) }
+    Rails.cache.fetch("albums", expires_in: 1.hour) do
+      call(:get, '/v1/albums')['albums']
+    end.map { |data| Album.find_or_create(data) }
   end
 
   def album(id)
-    data = call(:get, "/v1/albums/#{id}")
-    Album.new(data)
+    Album.find_or_create(
+      Rails.cache.fetch("albums/#{id}", expires_in: 1.hour) do
+        call(:get, "/v1/albums/#{id}")
+      end
+    )
   end
 
-  def album_photos(id)
-    call(:post, '/v1/mediaItems:search', {album_id: id})['mediaItems'].map { |data| Photo.new(data) }
+  def album_photos(album)
+    Rails.cache.fetch("photos/album_#{album.id}", expires_in: 1.hour) do
+      call(:post, '/v1/mediaItems:search', {album_id: album.external_id, page_size: "100"})['mediaItems']
+    end.map { |data| Photo.find_or_create(data, album.id) }
+  end
+
+  def photo(id)
+    Rails.cache.fetch("photos/#{id}", expires_in: 1.hour) do
+      call(:get, "/v1/mediaItems/#{id}")
+    end
   end
 
   private

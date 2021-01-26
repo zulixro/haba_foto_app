@@ -1,15 +1,14 @@
-class Album
-  attr_reader :id, :title, :year, :river, :tags, :date, :cover_photo_url, :photo_count
+class Album < ApplicationRecord
+  has_many :photos, dependent: :destroy
+  has_and_belongs_to_many :tags
+  has_and_belongs_to_many :places
 
-  def initialize(data)
-    @id = data["id"]
-    @title_data = JSON.parse(data["title"]) if data["title"]
-    @year = @title_data["rok"] if @title_data
-    @river = @title_data["miejsce"] if @title_data
-    @tags = @title_data["tagi"] if @title_data
-    @date = @title_data["data"] if @title_data
-    @title = [@year, @river, @tags, @date].join(" ")
-    @cover_photo_url = data["coverPhotoBaseUrl"]
-    @photo_count = data["mediaItemsCount"]
+  validates_presence_of :external_id
+
+  def self.find_or_create(data)
+    self.find_or_create_by(external_id: data["id"]) do |album|
+      album.title = data["title"]
+      album.cover_photo_url = data["coverPhotoBaseUrl"]
+    end
   end
 end

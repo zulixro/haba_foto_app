@@ -5,8 +5,8 @@ class AlbumsController < ApplicationController
   end
 
   def show
-    @album = photo_service.album(params[:id])
-    @photos = photo_service.album_photos(params[:id])
+    @album = Album.find(params[:id])
+    @photos = photo_service.album_photos(@album)
   end
 
   private

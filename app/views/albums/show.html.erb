@@ -7,19 +7,19 @@
 	  <td><%= @album.year %></td>
 	<tr>
 	  <td>gdzie:</td>
-    <td><%= @album.river %></td>
+    <td><%= @album.places.map(&:name).join(', ') %></td>
   </tr>
   <tr>
     <td>tagi:</td>
-    <td><%= @album.tags.join(', ') %></td>
+    <td><%= @album.tags.map(&:name).join(', ') %></td>
   </tr>
   <tr>
     <td>data:</td>
-    <td><%= @album.date %></td>
+    <td><%= "#{@album.start_date} - #{@album.end_date}" %></td>
   </tr>
   <tr>
     <td>autorzy:</td>
-    <td><%= @photos.map(&:by).compact.join(', ') %></td>
+    <td><%= @photos.map(&:author).compact.join(', ') %></td>
   </tr>
 </table>
 
@@ -32,10 +32,10 @@
       <table>
       	<tr>
       	  <td>autor/ka:</td>
-      	  <td><%= photo.by %></td>
+      	  <td><%= photo.author %></td>
       	<tr>
       	  <td>gdzie:</td>
-          <td><%= photo.river %></td>
+          <td><%= photo.places.map(&:name).join(', ') %></td>
         </tr>
         <tr>
           <td>data:</td>
