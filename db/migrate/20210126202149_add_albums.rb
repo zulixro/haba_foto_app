@@ -4,6 +4,7 @@ class AddAlbums < ActiveRecord::Migration[5.2]
       t.string :external_id, unique: true, null: false
       t.string :title
       t.integer :year
+      t.string :author
       t.date :start_date
       t.date :end_date
       t.string :cover_photo_url

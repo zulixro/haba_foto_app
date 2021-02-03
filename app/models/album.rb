@@ -6,9 +6,18 @@ class Album < ApplicationRecord
   validates_presence_of :external_id
 
   def self.find_or_create(data)
-    self.find_or_create_by(external_id: data["id"]) do |album|
+    album = self.find_or_create_by(external_id: data["id"]) do |album|
       album.title = data["title"]
-      album.cover_photo_url = data["coverPhotoBaseUrl"]
     end
+    album.update(cover_photo_url: data["coverPhotoBaseUrl"])
+    album
+  end
+
+  def dates
+    [start_date, end_date].uniq.join(' - ')
+  end
+
+  def display_authors
+    (photos.pluck(:author).uniq << author).join(', ')
   end
 end

@@ -30,6 +30,6 @@ module TokenHelper
   end
 
   def user
-    User.last
+    User.first
   end
 end

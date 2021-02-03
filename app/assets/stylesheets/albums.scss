@@ -2,6 +2,13 @@
     overflow: hidden;
     width: 100%;
     height: 200px;
+    margin-top: 10px;
+}
+
+.album-cover-photo-info {
+    font-size: 14px;
+	margin-left: 15px;
+	margin-right: 15px;
 }
 
 img.album-cover-photo {
@@ -12,4 +19,12 @@ img.album-cover-photo {
 
 .back-link {
 	margin-left: 2%;
+}
+
+.button {
+	width: 100%;
+}
+
+.album-data-container {
+	margin: 1.5%;
 }

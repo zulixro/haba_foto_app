@@ -1,47 +1,53 @@
-<h2 class="back-link"><%=link_to "<-", albums_path %></h2>
+<h3 class="back-link"><%=link_to "Wróć do listy", albums_path %></h3>
 <h1><%= @album.title %></h1>
 
-<table>
-	<tr>
-	  <td>rok:</td>
-	  <td><%= @album.year %></td>
-	<tr>
-	  <td>gdzie:</td>
-    <td><%= @album.places.map(&:name).join(', ') %></td>
-  </tr>
-  <tr>
-    <td>tagi:</td>
-    <td><%= @album.tags.map(&:name).join(', ') %></td>
-  </tr>
-  <tr>
-    <td>data:</td>
-    <td><%= "#{@album.start_date} - #{@album.end_date}" %></td>
-  </tr>
-  <tr>
-    <td>autorzy:</td>
-    <td><%= @photos.map(&:author).compact.join(', ') %></td>
-  </tr>
-</table>
+<div class="album-data-container">
+  <%=link_to "Edytuj dane", edit_album_path(@album), class: "float-right" %>
+  <table class="album-data">
+  	<tr>
+  	  <td>rok:</td>
+  	  <td><%= @album.year %></td>
+  	</tr>
+  	  <td>gdzie:</td>
+      <td><%= @album.places.map(&:name).join(', ') %></td>
+    </tr>
+    <tr>
+      <td>tagi:</td>
+      <td><%= @album.tags.map(&:name).join(', ') %></td>
+    </tr>
+    <tr>
+      <td>data:</td>
+      <td><%= @album.dates %></td>
+    </tr>
+    <tr>
+      <td>autor:</td>
+      <td><%= @album.display_authors %></td>
+    </tr>
+  </table>
+</div>
+
+<div class="row">
+  <div class="small-12">
+    <%=link_to "Edytuj autorów zdjęć", edit_photos_album_path(@album), class: "float-right" %>
+  </div>
+</div>
 
 <div class="row">
   <% @photos.each do |photo| %>
-    <div class="small-1 large-4 columns">
+    <div class="small-12 medium-6 large-3 columns">
       <div class="album-cover-photo">
-        <%= image_tag(photo.url) %>
+        <%= link_to image_tag(photo.url), photo.url %>
       </div>
-      <table>
-      	<tr>
-      	  <td>autor/ka:</td>
-      	  <td><%= photo.author %></td>
-      	<tr>
-      	  <td>gdzie:</td>
-          <td><%= photo.places.map(&:name).join(', ') %></td>
-        </tr>
-        <tr>
-          <td>data:</td>
-          <td><%= photo.date %></td>
-        </tr>
-      </table>
+      <div class="album-cover-photo-info">
+        <div class="row">
+          <div class="small-4">
+            Autor/ka:
+          </div>
+          <div class="small-6">
+            <%= photo.author %>
+          </div>
+        </div>
+      </div>
     </div>
   <% end %>
 </div>
