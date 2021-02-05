@@ -2,9 +2,9 @@
   <%= image_tag("haba_logo.jpg", class: "cover") %>
 
   <div class="cover">
-    <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
+    <%= form_for(resource, as: resource_name, url: user_session_path) do |f| %>
       <div class="field">
-        <%= f.email_field :email, value: Rails.application.credentials.user[:email], class: "hide" %>
+        <%= f.email_field :email, value: Rails.application.credentials.admin_user[:email], class: "hide" %>
       </div>
 
       <div class="field cover">

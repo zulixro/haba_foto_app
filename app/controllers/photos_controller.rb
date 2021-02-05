@@ -1,4 +1,5 @@
 class PhotosController < ApplicationController
+  before_action :authenticate_admin_user!
   before_action :find_photo, only: [:edit, :update]
 
   def update

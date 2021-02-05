@@ -2,7 +2,7 @@
   
 <div class="row">
   <% @albums.each do |album| %>
-    <div class="small-1 large-4 columns">
+    <div class="small-12 medium-6 large-3 columns">
       <div class="album-cover-photo">
         <%= link_to image_tag(album.cover_photo_url), album_path(album.id) %>
       </div>

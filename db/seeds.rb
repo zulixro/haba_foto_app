@@ -7,4 +7,4 @@
 #   Character.create(name: 'Luke', movie: movies.first)
 
 default_user = User.create!(email: Rails.application.credentials.user[:email], password: Rails.application.credentials.user[:pass])
-admin_user = User.create!(email: Rails.application.credentials.admin_user[:email], password: Rails.application.credentials.admin_user[:pass])
+admin_user = User.create!(email: Rails.application.credentials.admin_user[:email], password: Rails.application.credentials.admin_user[:pass], admin: true)

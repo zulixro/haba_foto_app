@@ -36,7 +36,7 @@
   <% @photos.each do |photo| %>
     <div class="small-12 medium-6 large-3 columns">
       <div class="album-cover-photo">
-        <%= link_to image_tag(photo.url), photo.url %>
+        <%= link_to image_tag(photo.url), photo.url, target: :_blank %>
       </div>
       <div class="album-cover-photo-info">
         <div class="row">
