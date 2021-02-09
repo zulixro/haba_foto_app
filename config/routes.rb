@@ -10,6 +10,7 @@ Rails.application.routes.draw do
     end
   end
   resources :photos
+  resources :welcome, only: [:index]
 
-  root to: "albums#index"
+  root to: "welcome#index"
 end

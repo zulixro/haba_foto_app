@@ -1,5 +1,5 @@
 class AlbumsController < ApplicationController
-  before_action :authenticate_admin_user!
+  before_action :authenticate_admin_user!, only: [:show, :edit, :update, :edit_photos]
   before_action :find_album, only: [:show, :edit, :update, :edit_photos]
 
   def index
@@ -8,6 +8,10 @@ class AlbumsController < ApplicationController
 
   def show
     @photos = photo_service.album_photos(@album)
+  end
+
+  def new
+    @album = Album.new
   end
 
   def edit

@@ -13,11 +13,13 @@
   </head>
 
   <body>
-    <p class="navbar-text float-right">
-      <% if user_signed_in? %>
-        <%= link_to "Wyloguj się, papa!", destroy_user_session_path, method: :delete, :class => 'navbar-link'  %>
-      <% end %>
-    </p>
-    <%= yield %>
+    <div>
+      <ul class="menu align-right">
+        <% if user_signed_in? %>
+          <li><%= link_to "Wyloguj się, papa!", destroy_user_session_path, method: :delete, :class => 'navbar-link'  %></li>
+        <% end %>
+      </ul>
+      <%= yield %>
+    </div>
   </body>
 </html>
