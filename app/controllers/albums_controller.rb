@@ -14,6 +14,17 @@ class AlbumsController < ApplicationController
     @album = Album.new
   end
 
+  def create
+    album = Album.new(album_params.slice("title", "year", "author", "start_date", "end_date", "agreed_to_publish"))
+    album.external_id = photo_service.create_album_id(album.title)
+    if album.save
+      redirect_to album
+    else
+      flash[:error] = "Coś się nie udało"
+      render :new
+    end
+  end
+
   def edit
   end
 
