@@ -2,46 +2,29 @@
   <div class="grid-container">
     <div class="grid-x grid-padding-x">
       <div class="small-12 medium-5 cell">
-        <%= form.text_field :title, value: album.title, placeholder: "Nazwa albumu" %>
+        <%= form.text_field :title, value: album.title, placeholder: "Nazwa albumu", required: true %>
       </div>
       <div class="small-12 medium-5 cell">
-        <%= form.number_field :year, value: album.year, placeholder: "Rok" %>
+        <%= form.number_field :year, value: album.year || Time.now.year, placeholder: "Rok" %>
       </div>
       <div class="small-12 medium-5 cell">
-        <div class="row">
-          <%= form.label :start_date, "Data rozpoczęcia" %>
-        </div>
-        <div class="row">
-          <%= form.date_field :start_date, value: album.start_date  %>
-        </div>
+        <%= form.text_field :author, value: album.author, placeholder: "Autor zdjęć", required: true %>
       </div>
       <div class="small-12 medium-5 cell">
-        <div class="row">
-          <%= form.label :end_date, "Data zakończenia" %>
-        </div>
-        <div class="row">
-          <%= form.date_field :end_date, value: album.end_date %>
-        </div>
+        <%= form.text_field :tags, value: album.tags.pluck(:name).join(', '), placeholder: "Tagi" %>
       </div>
       <div class="small-12 medium-5 cell">
-        <%= form.text_field :author, value: album.author, placeholder: "Autor zdjęć" %>
+        <%= form.text_field :places, value: album.places.pluck(:name).join(', '), placeholder: "Rzeka/Miejsce", required: true %>
       </div>
-      <div class="small-12 medium-5 cell">
-        <%= form.check_box :update_photo_authors %>
-        <%= form.label :update_photo_authors, "Przypisz tego autora do wszystkich zdjęć w albumie", class: "text-left middle" %>
-      </div>
-      <div class="small-12 medium-5 cell">
-        <%= form.label :tags, "Tagi" %>
-        <%= form.text_field :tags, value: album.tags.pluck(:name).join(', ') %>
-      </div>
-      <div class="small-12 medium-5 cell">
-        <%= form.label :planes, "Miejsce" %>
-        <%= form.text_field :places, value: album.places.pluck(:name).join(', ') %>
-      </div>
-      <div class="small-12 medium-5 cell">
-        <%= form.check_box :agreed_to_publish %>
+      <div class="small-12 cell">
+        <%= form.check_box :agreed_to_publish, required: true %>
         <%= form.label :agreed_to_publish, "Zgoda autora na publikację" %>
       </div>
+      <% unless album.photos.any? %>
+        <div class="small-12 cell">
+          <%= form.file_field :images, multiple: true, accept: 'image/png,image/gif,image/jpeg,image/jpg', required: true %>
+        </div>
+      <% end %>
       <div class="small-12 medium-10 cell">
         <%= form.submit "Zapisz", class: :button %>
       </div>

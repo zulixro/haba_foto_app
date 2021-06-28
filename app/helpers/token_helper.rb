@@ -30,6 +30,6 @@ module TokenHelper
   end
 
   def user
-    User.first
+    @user ||= User.first
   end
 end

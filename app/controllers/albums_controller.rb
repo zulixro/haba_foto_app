@@ -1,5 +1,4 @@
 class AlbumsController < ApplicationController
-  before_action :authenticate_admin_user!, only: [:show, :edit, :update, :edit_photos]
   before_action :find_album, only: [:show, :edit, :update, :edit_photos]
 
   def index
@@ -15,10 +14,21 @@ class AlbumsController < ApplicationController
   end
 
   def create
-    album = Album.new(album_params.slice("title", "year", "author", "start_date", "end_date", "agreed_to_publish"))
-    album.external_id = photo_service.create_album_id(album.title)
-    if album.save
-      redirect_to album
+    @album = Album.new(album_params.slice("title", "year", "author", "agreed_to_publish"))
+    @album.external_id = photo_service.create_album_id(@album.title)
+    if images.count > 15
+      flash[:error] = 'Możesz dodać maksymalnie 15 zdjęć na wydarzenie, wybierz najlepsze'
+      render :new
+    elsif images.count < 1
+      flash[:error] = 'Dodaj chociaż jedno zdjęcie'
+      render :new
+
+    elsif @album.save
+      update_tags
+      update_places
+      add_images
+
+      redirect_to @album
     else
       flash[:error] = "Coś się nie udało"
       render :new
@@ -29,17 +39,14 @@ class AlbumsController < ApplicationController
   end
 
   def update
-    update_params = album_params.slice("title", "year", "author", "start_date", "end_date", "agreed_to_publish")
+    update_params = album_params.slice("title", "year", "author", "agreed_to_publish")
     @album.update!(update_params)
 
     update_tags
     update_places
-    update_author if album_params["update_photo_authors"]
+    add_images
 
     redirect_to @album
-  end
-
-  def edit_photos
   end
 
   private
@@ -53,36 +60,44 @@ class AlbumsController < ApplicationController
   end
 
   def album_params
-    params.require(:album).permit(:title, :year, :start_date, :end_date, :agreed_to_publish, :author, :update_photo_authors, :tags, :places)
+    params.require(:album).permit(:title, :year, :agreed_to_publish, :author, :tags, :places, images:[])
   end
 
   def update_tags
-    if tags = album_params["tags"]
+    unless tags.blank?
       @album.tags.delete_all
-      tags = tags.split(/[,\s]+/)
-      tags.each do |tag_name|
+      tags.split(/[,\s]+/).each do |tag_name|
         tag = Tag.find_or_create_by(name: tag_name)
         @album.tags << tag
-        @album.photos.each { |photo| photo.tags << tag unless photo.tags.include?(tag) }
       end
     end
   end
 
   def update_places
-    if places = album_params["places"]
+    unless places.blank?
       @album.places.delete_all
-      places = places.split(/[,\s]+/)
-      places.each do |place_name|
+      places.split(/[,]+/).each do |place_name|
         place = Place.find_or_create_by(name: place_name)
         @album.places << place
-        @album.photos.each { |photo| photo.places << place unless photo.places.include?(place) }
       end
     end
   end
 
-  def update_author
-    if author = album_params["author"]
-      @album.photos.update_all(author: author)
-    end
+  def add_images
+    tokens = images.map { |image| photo_service.upload_token(image.read) }
+    photo_service.add_media_items(tokens, @album.external_id)
+    Rails.cache.delete("photos/album_#{@album.external_id}")
+  end
+
+  def images
+    album_params["images"]
+  end
+
+  def places
+    album_params["places"]
+  end
+
+  def tags
+    album_params["tags"]
   end
 end

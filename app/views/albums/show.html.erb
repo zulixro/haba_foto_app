@@ -16,20 +16,10 @@
       <td><%= @album.tags.map(&:name).join(', ') %></td>
     </tr>
     <tr>
-      <td>data:</td>
-      <td><%= @album.dates %></td>
-    </tr>
-    <tr>
       <td>autor:</td>
-      <td><%= @album.display_authors %></td>
+      <td><%= @album.author %></td>
     </tr>
   </table>
-</div>
-
-<div class="row">
-  <div class="small-12">
-    <%=link_to "Edytuj autorów zdjęć", edit_photos_album_path(@album), class: "float-right" %>
-  </div>
 </div>
 
 <div class="row">
@@ -37,16 +27,6 @@
     <div class="small-12 medium-6 large-3 columns">
       <div class="album-cover-photo">
         <%= link_to image_tag(photo.url), photo.url, target: :_blank %>
-      </div>
-      <div class="album-cover-photo-info">
-        <div class="row">
-          <div class="small-4">
-            Autor/ka:
-          </div>
-          <div class="small-6">
-            <%= photo.author %>
-          </div>
-        </div>
       </div>
     </div>
   <% end %>

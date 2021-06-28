@@ -12,12 +12,4 @@ class Album < ApplicationRecord
     album.update(cover_photo_url: data["coverPhotoBaseUrl"])
     album
   end
-
-  def dates
-    [start_date, end_date].uniq.join(' - ')
-  end
-
-  def display_authors
-    (photos.pluck(:author).uniq << author).join(', ')
-  end
 end

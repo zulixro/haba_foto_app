@@ -1,7 +1,5 @@
 class Photo < ApplicationRecord
   belongs_to :album
-  has_and_belongs_to_many :tags
-  has_and_belongs_to_many :places
 
   validates_presence_of :external_id
 
