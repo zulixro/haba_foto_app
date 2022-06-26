@@ -1,6 +1,40 @@
 <div class="row">
   <h1>Albumy   <span class="smaller-font"><%= link_to "+ dodaj nowy", new_album_path %></span></h1>
 </div>
+
+<div class="row">
+  <%= search_form_for @q do |f| %>
+
+    <div class="small-12 medium-6 large-2 columns">
+      <%= f.label :title_cont, 'Tytuł Albumu' %>
+      <%= f.search_field :title_cont %>
+    </div>
+
+    <div class="small-12 medium-6 large-2 columns">
+      <%= f.label :year_eq, 'Rok' %>
+      <%= f.search_field :year_eq %>
+    </div>
+
+    <div class="small-12 medium-6 large-2 columns">
+      <%= f.label :places_id_eq, 'Rzeka/Miejsce' %>
+      <%= f.collection_select :places_id_eq, Place.all, :id, :name, include_blank: true %>
+    </div>
+
+    <div class="small-12 medium-6 large-2 columns">
+      <%= f.label :tags_id_eq, 'Tag' %>
+      <%= f.collection_select :tags_id_eq, Place.all, :id, :name, include_blank: true %>
+    </div>
+
+    <div class="small-12 medium-6 large-2 columns">
+      <%= f.label :author_cont, 'Autor' %>
+      <%= f.search_field :author_cont %>
+    </div>
+
+    <div class="small-12 columns">
+      <%= f.submit 'Filtruj', class: "button large"%>
+    </div>
+  <% end %>
+</div>
   
 <div class="row">
   <% @albums.each do |album| %>

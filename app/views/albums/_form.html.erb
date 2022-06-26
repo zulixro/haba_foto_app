@@ -18,13 +18,20 @@
       </div>
       <div class="small-12 cell">
         <%= form.check_box :agreed_to_publish, required: true %>
-        <%= form.label :agreed_to_publish, "Zgoda autora na publikację" %>
+        <%= form.label :agreed_to_publish, "Zgoda autora na publikację zdjęć (WYMAGANA!)" %>
       </div>
       <% unless album.photos.any? %>
-        <div class="small-12 cell">
-          <%= form.file_field :images, multiple: true, accept: 'image/png,image/gif,image/jpeg,image/jpg', required: true %>
+        <div class="small-12 medium-10 cell">
+          <label class='button'>
+            Dodaj maksymalnie 30 zdjęć
+            <span style="display:none;"><%= form.file_field :images, multiple: true, accept: 'image/png,image/gif,image/jpeg,image/jpg', required: true, onchange: "updateImagesList(this)" %></span>
+          </label>
         </div>
+        <div class="small-12 medium-10 cell" id='image_list'>
+        </div>
+        <br/>
       <% end %>
+      </br>
       <div class="small-12 medium-10 cell">
         <%= form.submit "Zapisz", class: :button %>
       </div>

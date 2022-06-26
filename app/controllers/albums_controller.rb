@@ -2,7 +2,8 @@ class AlbumsController < ApplicationController
   before_action :find_album, only: [:show, :edit, :update, :edit_photos]
 
   def index
-    @albums = photo_service.albums
+    @q = Album.where(id: photo_service.album_ids).ransack(params[:q])
+    @albums = @q.result(distinct: true)
   end
 
   def show
@@ -16,8 +17,8 @@ class AlbumsController < ApplicationController
   def create
     @album = Album.new(album_params.slice("title", "year", "author", "agreed_to_publish"))
     @album.external_id = photo_service.create_album_id(@album.title)
-    if images.count > 15
-      flash[:error] = 'Możesz dodać maksymalnie 15 zdjęć na wydarzenie, wybierz najlepsze'
+    if images.count > 30
+      flash[:error] = 'Możesz dodać maksymalnie 30 zdjęć na wydarzenie, wybierz najlepsze'
       render :new
     elsif images.count < 1
       flash[:error] = 'Dodaj chociaż jedno zdjęcie'
@@ -84,7 +85,10 @@ class AlbumsController < ApplicationController
   end
 
   def add_images
-    tokens = images.map { |image| photo_service.upload_token(image.read) }
+    tokens = images.map do |image|
+      resized_image = MiniMagick::Image.new(image.tempfile.path).resize '1200x1200'
+      photo_service.upload_token(resized_image.to_blob)
+    end
     photo_service.add_media_items(tokens, @album.external_id)
     Rails.cache.delete("photos/album_#{@album.external_id}")
   end

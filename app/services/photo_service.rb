@@ -4,11 +4,11 @@ require 'jwt'
 class PhotoService
   include TokenHelper
 
-  def albums
+  def album_ids
     Rails.cache.fetch("albums", expires_in: 1.hour) do
       response = JSON.parse(call(:get, '/v1/albums'))
       response['albums']
-    end.map { |data| Album.find_or_create(data) }
+    end.map { |data| Album.find_or_create(data).id }
   end
 
   def album(id)
@@ -54,14 +54,14 @@ class PhotoService
   private
 
   def call(method, path, payload=nil, content_type='application/json')
-    data = {
-      method: method,
-      url: Rails.application.credentials.google[:library][:url] + path,
-      headers: {'Authorization' => "Bearer #{access_token}", 'Content-Type' => content_type}
-    }
-    data.merge!({ payload: payload }) if payload
-
     begin
+      data = {
+        method: method,
+        url: Rails.application.credentials.google[:library][:url] + path,
+        headers: {'Authorization' => "Bearer #{access_token}", 'Content-Type' => content_type}
+      }
+      data.merge!({ payload: payload }) if payload
+
       response = RestClient::Request.new(data).execute
       response.body
     rescue RestClient::BadRequest => err

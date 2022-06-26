@@ -4,10 +4,10 @@ class Photo < ApplicationRecord
   validates_presence_of :external_id
 
   def self.find_or_create(data, album_id)
-    photo = self.find_or_create_by(external_id: data["id"]) do |photo|
+    Rails.cache.write("#{data["id"]}_url", "#{data["baseUrl"]}=w500-h500", expires_in: 1.hour)
+    self.find_or_create_by(external_id: data["id"]) do |photo|
       photo.date = data["mediaMetadata"]["creationTime"]
       photo.album_id = album_id
-      Rails.cache.write("#{data["id"]}_url", "#{data["baseUrl"]}=w500-h500", expires_in: 1.hour)
     end
   end
 

@@ -1,7 +1,7 @@
 module TokenHelper
 
   def access_token
-    crypt.decrypt_and_verify(user.encrypted_token)
+    @access_token ||= crypt.decrypt_and_verify(user.encrypted_token)
   end
 
   private
@@ -12,8 +12,8 @@ module TokenHelper
 
   def refresh_access_token
     response = RestClient.post "https://oauth2.googleapis.com/token", refresh_token_params
-    token = JSON.parse(response.body)["access_token"]
-    user.update!(encrypted_token: @crypt.encrypt_and_sign(token))
+    @access_token = JSON.parse(response.body)["access_token"]
+    @user.update!(encrypted_token: @crypt.encrypt_and_sign(@access_token))
   end
 
   def refresh_token_params
