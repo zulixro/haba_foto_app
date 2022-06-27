@@ -40,7 +40,7 @@ gem 'rest-client'
 gem 'jwt'
 gem 'foundation-rails'
 gem 'autoprefixer-rails'
-gem 'mini_racer'
+gem 'mini_racer', '>=0.2.1'
 gem 'mini_magick'
 gem 'ransack'
 
