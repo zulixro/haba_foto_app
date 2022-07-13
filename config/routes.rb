@@ -6,7 +6,8 @@ Rails.application.routes.draw do
 
   resources :albums do
     member do
-      put :edit_photos
+      get :add_photos_form
+      put :add_photos
     end
   end
   resources :photos

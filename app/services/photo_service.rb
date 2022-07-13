@@ -24,12 +24,12 @@ class PhotoService
     JSON.parse(response)['id']
   end
 
-  def album_photos(album)
-    photos = Rails.cache.fetch("photos/album_#{album.id}", expires_in: 1.hour) do
+  def album_photos(album, author=nil)
+    photos = Rails.cache.fetch("photos/album_#{album.external_id}", expires_in: 1.hour) do
       response = call(:post, '/v1/mediaItems:search', {album_id: album.external_id, page_size: "100"}.to_json)
       JSON.parse(response)['mediaItems']
     end
-    photos ? photos.map { |data| Photo.find_or_create(data, album.id) } : []
+    photos ? photos.map { |data| Photo.find_or_create(data, album, author) } : []
   end
 
   def photo(id)

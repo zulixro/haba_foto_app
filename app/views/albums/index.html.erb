@@ -40,9 +40,17 @@
   <% @albums.each do |album| %>
     <div class="small-12 medium-6 large-3 columns">
       <div class="album-cover-photo">
-        <%= link_to image_tag(album.cover_photo_url), album_path(album.id) %>
+        <%= link_to image_tag(album.cover_photo_url), album_path(album.external_id) %>
       </div>
       <h5><%= album.title %></h5>
+      <div class="row">
+        <div class="small-6 columns">Rok:</div>
+      	<div class="small-6 columns"><%= album.year %></div>
+        <div class="small-6 columns">Miejsce:</div>
+      	<div class="small-6 columns"><%= album.place_names %></div>
+        <div class="small-6 columns">Autorzy/rki:</div>
+      	<div class="small-6 columns"><%= album.authors %></div>
+      </div>
     </div>
   <% end %>
 </div>

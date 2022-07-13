@@ -1,8 +1,11 @@
-<h3 class="back-link"><%=link_to "Wróć do listy", albums_path %></h3>
+<% if current_user.admin? %>
+  <h3 class="back-link"><%=link_to "Wróć do listy", albums_path %></h3>
+<% end %>
 <h1><%= @album.title %></h1>
 
 <div class="album-data-container">
   <%=link_to "Edytuj dane", edit_album_path(@album), class: "float-right" %>
+  <%=link_to "Dodaj zdjęcia", add_photos_form_album_path(@album), class: "float-right" %>
   <table class="album-data">
   	<tr>
   	  <td>rok:</td>
@@ -27,6 +30,9 @@
     <div class="small-12 medium-6 large-3 columns">
       <div class="album-cover-photo">
         <%= link_to image_tag(photo.url), photo.url, target: :_blank %>
+      </div>
+      <div>
+        Autor: <%= photo.author %>
       </div>
     </div>
   <% end %>

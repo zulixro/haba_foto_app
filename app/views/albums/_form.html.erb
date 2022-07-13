@@ -23,7 +23,7 @@
       <% unless album.photos.any? %>
         <div class="small-12 medium-10 cell">
           <label class='button'>
-            Dodaj maksymalnie 30 zdjęć
+            Dodaj maksymalnie 50 zdjęć
             <span style="display:none;"><%= form.file_field :images, multiple: true, accept: 'image/png,image/gif,image/jpeg,image/jpg', required: true, onchange: "updateImagesList(this)" %></span>
           </label>
         </div>

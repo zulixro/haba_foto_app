@@ -25,6 +25,7 @@ ActiveRecord::Schema.define(version: 2021_01_26_205223) do
     t.boolean "agreed_to_publish", default: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "author"
     t.index ["external_id"], name: "index_albums_on_external_id"
   end
 
@@ -89,6 +90,7 @@ ActiveRecord::Schema.define(version: 2021_01_26_205223) do
     t.datetime "updated_at", null: false
     t.string "encrypted_token"
     t.string "encrypted_refresh_token"
+    t.boolean "admin", default: false
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end

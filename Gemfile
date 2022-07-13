@@ -43,6 +43,7 @@ gem 'autoprefixer-rails'
 gem 'mini_racer', '<0.6'
 gem 'mini_magick'
 gem 'ransack'
+gem 'friendly_id'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

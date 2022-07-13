@@ -1,9 +1,10 @@
 class AlbumsController < ApplicationController
-  before_action :find_album, only: [:show, :edit, :update, :edit_photos]
+  before_action :find_album, only: [:show, :edit, :update, :add_photos, :add_photos_form]
+  before_action :authenticate_admin_user!, only: [:index]
 
   def index
     @q = Album.where(id: photo_service.album_ids).ransack(params[:q])
-    @albums = @q.result(distinct: true)
+    @albums = @q.result(distinct: true).reverse_order
   end
 
   def show
@@ -17,13 +18,12 @@ class AlbumsController < ApplicationController
   def create
     @album = Album.new(album_params.slice("title", "year", "author", "agreed_to_publish"))
     @album.external_id = photo_service.create_album_id(@album.title)
-    if images.count > 30
-      flash[:error] = 'Możesz dodać maksymalnie 30 zdjęć na wydarzenie, wybierz najlepsze'
+    if images.count > 50
+      flash[:error] = 'Możesz dodać maksymalnie 50 zdjęć, wybierz najlepsze'
       render :new
     elsif images.count < 1
       flash[:error] = 'Dodaj chociaż jedno zdjęcie'
       render :new
-
     elsif @album.save
       update_tags
       update_places
@@ -40,7 +40,7 @@ class AlbumsController < ApplicationController
   end
 
   def update
-    update_params = album_params.slice("title", "year", "author", "agreed_to_publish")
+    update_params = album_params.slice("title", "year", "agreed_to_publish")
     @album.update!(update_params)
 
     update_tags
@@ -50,10 +50,20 @@ class AlbumsController < ApplicationController
     redirect_to @album
   end
 
+  def add_photos_form
+  end
+
+  def add_photos
+    add_images
+    photo_service.album_photos(@album, album_params["author"])
+
+    redirect_to @album
+  end
+
   private
 
   def find_album
-    @album = Album.find(params[:id])
+    @album = Album.friendly.find(params[:id])
   end
 
   def photo_service
@@ -85,12 +95,14 @@ class AlbumsController < ApplicationController
   end
 
   def add_images
-    tokens = images.map do |image|
-      resized_image = MiniMagick::Image.new(image.tempfile.path).resize '1200x1200'
-      photo_service.upload_token(resized_image.to_blob)
+    if images
+      tokens = images.map do |image|
+        resized_image = MiniMagick::Image.new(image.tempfile.path).resize '1200x1200'
+        photo_service.upload_token(resized_image.to_blob)
+      end
+      photo_service.add_media_items(tokens, @album.external_id)
+      Rails.cache.delete("photos/album_#{@album.external_id}")
     end
-    photo_service.add_media_items(tokens, @album.external_id)
-    Rails.cache.delete("photos/album_#{@album.external_id}")
   end
 
   def images

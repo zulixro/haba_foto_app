@@ -1,0 +1,20 @@
+<%= form_with model: @album, url: :add_photos_album, method: :put, remote: false, class: "search-form" do |form| %>
+  <div class="grid-container">
+    <div class="grid-x grid-padding-x">
+      <div class="small-12 medium-5 cell">
+        <%= form.text_field :author, value: @album.author, placeholder: "Autor zdjęć", required: true %>
+      </div>
+      <div class="small-12 medium-5 cell">
+        <label class='button'>
+          Dodaj maksymalnie 50 zdjęć
+          <span style="display:none;"><%= form.file_field :images, multiple: true, accept: 'image/png,image/gif,image/jpeg,image/jpg', required: true, onchange: "updateImagesList(this)" %></span>
+        </label>
+      </div>
+      <div class="small-12 medium-5 cell" id='image_list'></div>
+      </br>
+      <div class="small-12 medium-5 cell">
+        <%= form.submit "Zapisz", class: :button %>
+      </div>
+    </div>
+  </div>
+<% end %>
