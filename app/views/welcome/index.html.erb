@@ -1,18 +1,20 @@
+<% if current_user.admin? %>
+  <h3 class="back-link"><%=link_to "Zobacz wszystkie albumy", albums_path %></h3>
+<% end %>
+<div class="grid-x grid-padding-x add-text-container align-center align-bottom">
+	<p class="no-margin">dodaj album</p>
+</div>
 
-	<div class="grid-x grid-padding-x add-text-container align-center align-bottom">
-		<p class="no-margin">dodaj album</p>
-	</div>
+<div class="grid-x grid-padding-x add-text-container align-center-middle">
+	<div class="container">
+  <div class="chevron"></div>
+  <div class="chevron"></div>
+  <div class="chevron"></div>
+</div>
+</div>
 
-	<div class="grid-x grid-padding-x add-text-container align-center-middle">
-		<div class="container">
-    <div class="chevron"></div>
-    <div class="chevron"></div>
-    <div class="chevron"></div>
+<div class="grid-x grid-padding-x add-button-container align-center align-top">
+  <div class="row">
+    <%= link_to "+", new_album_path, class: "button large add-button" %>
   </div>
-	</div>
-
-	<div class="grid-x grid-padding-x add-button-container align-center align-top">
-    <div class="row">
-      <%= link_to "+", new_album_path, class: "button large add-button" %>
-    </div>
-  </div>
+</div>
